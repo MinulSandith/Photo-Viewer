@@ -178,7 +178,7 @@ if copy_height > pixel_y*87.5/100:
     display_img = display_img.resize(
         (int(copy_width), int(copy_height)), Image.ANTIALIAS)
 
-choose_img = Image.open("D:\Minul\python\developed\photo viewer\images.png")
+choose_img = Image.open("images.png")
 choose_img = choose_img.resize(
     (int(pixel_y*12.5/100), int(pixel_y*12.5/100)), Image.ANTIALIAS)
 choose_img = ImageTk.PhotoImage(choose_img)

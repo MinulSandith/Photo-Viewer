@@ -1,7 +1,6 @@
 from tkinter.filedialog import askopenfilename
 import pathlib
 import os
-import ctypes
 import tkinter as tk
 from tkinter import ttk
 from tkinter.constants import CENTER
@@ -10,14 +9,19 @@ import pathlib
 # i must stop over lapping,and disabling of buttons
 from tkinter.filedialog import askopenfilename
 from PIL import Image, ImageTk
+
+try:
+    RESAMPLE = Image.Resampling.LANCZOS
+except AttributeError:
+    RESAMPLE = Image.ANTIALIAS
+
 global end
 end = 1
 root = tk.Tk()
 time = "first"
 root.title("The Infinite Viewer")
-user32 = ctypes.windll.user32
-pixel_x = user32.GetSystemMetrics(0)
-pixel_y = user32.GetSystemMetrics(1)-75
+pixel_x = root.winfo_screenwidth()
+pixel_y = root.winfo_screenheight()-75
 x_cordinate = int((pixel_x/2) - (pixel_x/2))
 y_cordinate = int((pixel_y/2) - (pixel_y/2))
 global copy
@@ -89,13 +93,13 @@ def display():
        copy_width = copy_width/1.1111
        copy_height = copy_height/1.1111
     display_img = display_img.resize(
-        (int(copy_width), int(copy_height)), Image.ANTIALIAS)
+        (int(copy_width), int(copy_height)), RESAMPLE)
   if copy_height > pixel_y*87.5/100:
     while copy_height > pixel_y*87.5/100:
        copy_width = copy_width/1.1111
        copy_height = copy_height/1.1111
     display_img = display_img.resize(
-        (int(copy_width), int(copy_height)), Image.ANTIALIAS)
+        (int(copy_width), int(copy_height)), RESAMPLE)
 
   display_img = ImageTk.PhotoImage(display_img)
   image_area = tk.Label(root, image=display_img)
@@ -156,31 +160,31 @@ def zoom_in():
     display_img = Image.open(
         imagefiles[index])
     display_img = display_img.resize(
-        (int(i_w*1.3),int( i_h*1.3)), Image.ANTIALIAS)
+        (int(i_w*1.3),int( i_h*1.3)), RESAMPLE)
     display()
 
 def zoom_out():
     global display_img,imagefiles,index,i_h,i_w
     display_img = Image.open(
         imagefiles[index])
-    display_img = display_img.resize((int(i_w/1.3), int(i_h/1.3)), Image.ANTIALIAS)
+    display_img = display_img.resize((int(i_w/1.3), int(i_h/1.3)), RESAMPLE)
     display()
 if copy_width > pixel_x:
     while copy_width > pixel_x:
        copy_width = copy_width/1.1111
        copy_height = copy_height/1.1111
     display_img = display_img.resize(
-        (int(copy_width), int(copy_height)), Image.ANTIALIAS)
+        (int(copy_width), int(copy_height)), RESAMPLE)
 if copy_height > pixel_y*87.5/100:
     while copy_height > pixel_y*87.5/100:
        copy_width = copy_width/1.1111
        copy_height = copy_height/1.1111
     display_img = display_img.resize(
-        (int(copy_width), int(copy_height)), Image.ANTIALIAS)
+        (int(copy_width), int(copy_height)), RESAMPLE)
 
 choose_img = Image.open("images.png")
 choose_img = choose_img.resize(
-    (int(pixel_y*12.5/100), int(pixel_y*12.5/100)), Image.ANTIALIAS)
+    (int(pixel_y*12.5/100), int(pixel_y*12.5/100)), RESAMPLE)
 choose_img = ImageTk.PhotoImage(choose_img)
 choose_img_hw = pixel_y*12.5/100
 
